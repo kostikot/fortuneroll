@@ -1,6 +1,4 @@
-
 const prizes = [
-
 
 ];
 
@@ -9,10 +7,10 @@ const spinner = wheel.querySelector(".spinner");
 const trigger = wheel.querySelector(".btn-spin");
 const ticker = wheel.querySelector(".ticker");
 
-const prizeSlice = 360 / prizes.length;
+let prizeSlice = prizes.length > 0 ? 360 / prizes.length : 0;
 console.log(prizes.length)
 console.log(prizeSlice)
-const prizeOffset = Math.floor(180 / prizes.length);
+let prizeOffset = Math.max(1, Math.floor(180 / prizes.length));
 console.log(prizeOffset)
 const spinClass = "is-spinning";
 const selectedClass = "selected";
@@ -29,7 +27,7 @@ const createPrizeNodes = () => {
     spinner.insertAdjacentHTML(
       "beforeend",
       `<li class="prize" data-reaction=${reaction} style="--rotate: ${rotation}deg">
-        <span class="text">${text}</span>
+        <span class="text">${text}</span> 
       </li>`
     );
   });
@@ -106,14 +104,17 @@ spinner.addEventListener("transitionend", () => {
 const formAddiingCellEl = document.querySelector("#formAddiingCell"); 
 
 function handleformAddiingCellSubmit(event) {
-  event.preventDefault();  //убирает перезагрузку страницы
-  //получает из формы данные
+  event.preventDefault(); 
   const formData = new FormData(formAddiingCellEl);
-  const newChoise = Object.fromEntries(formData)
-  newChoise.reaction = 'winner';
+  const newChoise = Object.fromEntries(formData); 
+  newChoise.reaction = 'winner'; 
   prizes.push(newChoise);  //заносит данные
+  prizeSlice = 360 / prizes.length; 
+  prizeOffset = Math.floor(180 / prizes.length);
+
   setupWheel(); 
 }
+
 
 formAddiingCellEl.addEventListener("submit", handleformAddiingCellSubmit); 
 
