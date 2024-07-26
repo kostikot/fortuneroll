@@ -1,18 +1,15 @@
 
-const prizes = [
-
-
-];
+const prizes = [];
 
 const wheel = document.querySelector(".deal-wheel");
 const spinner = wheel.querySelector(".spinner");
 const trigger = wheel.querySelector(".btn-spin");
 const ticker = wheel.querySelector(".ticker");
 
-const prizeSlice = 360 / prizes.length;
+let prizeSlice = 360 / 1;   //делит на сектора 
 console.log(prizes.length)
 console.log(prizeSlice)
-const prizeOffset = Math.floor(180 / prizes.length);
+let prizeOffset = Math.floor(180 / 1); // на какое расстояние смещаем сектора
 console.log(prizeOffset)
 const spinClass = "is-spinning";
 const selectedClass = "selected";
@@ -24,8 +21,10 @@ let currentSlice = 0;
 let prizeNodes;
 
 const createPrizeNodes = () => {
+  spinner.innerHTML='';
   prizes.forEach(({ text, color, reaction }, i) => {
     const rotation = ((prizeSlice * i) * -1) - prizeOffset;
+    console.log(text); 
     spinner.insertAdjacentHTML(
       "beforeend",
       `<li class="prize" data-reaction=${reaction} style="--rotate: ${rotation}deg">
@@ -112,9 +111,13 @@ function handleformAddiingCellSubmit(event) {
   const newChoise = Object.fromEntries(formData)
   newChoise.reaction = 'winner';
   prizes.push(newChoise);  //заносит данные
-  setupWheel(); 
+  prizeSlice = 360 / prizes.length;   //делит на сектора 
+  prizeOffset = Math.floor(180 / prizes.length); // на какое расстояние смещаем сектора
+  setupWheel();   
+  console.log(prizes);
+  console.log(prizeNodes);
 }
 
 formAddiingCellEl.addEventListener("submit", handleformAddiingCellSubmit); 
 
-setupWheel();
+//setupWheel();
