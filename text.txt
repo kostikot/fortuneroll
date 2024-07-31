@@ -26,4 +26,4 @@ https://thecode.media/fortune/
 git switch -c 'task1' - создать ветку
 git add . - добавить в измения в отслеживаемые
 git commit -m 'first coomit' - добавить комментарий
- git push origin task1 - добавить изменения в ветку
+git push origin task1 - добавить изменения в ветку

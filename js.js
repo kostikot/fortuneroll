@@ -1,5 +1,6 @@
 
-const prizes = []; 
+const prizes = [
+]; 
  
 const wheel = document.querySelector(".deal-wheel"); 
 const spinner = wheel.querySelector(".spinner"); 
@@ -7,10 +8,10 @@ const trigger = wheel.querySelector(".btn-spin");
 const ticker = wheel.querySelector(".ticker"); 
  
 let prizeSlice = 360 / 1;   //делит на сектора  
-console.log(prizes.length) 
-console.log(prizeSlice) 
+//console.log(prizes.length) 
+//console.log(prizeSlice) 
 let prizeOffset = Math.floor(180 / 1); // на какое расстояние смещаем сектора 
-console.log(prizeOffset) 
+//console.log(prizeOffset) 
 const spinClass = "is-spinning"; 
 const selectedClass = "selected"; 
 const spinnerStyles = window.getComputedStyle(spinner); 
@@ -24,7 +25,7 @@ const createPrizeNodes = () => {
   spinner.innerHTML=''; 
   prizes.forEach(({ text, color, reaction }, i) => { 
     const rotation = ((prizeSlice * i) * -1) - prizeOffset; 
-    console.log(text);  
+//    console.log(text);  
     spinner.insertAdjacentHTML( 
       "beforeend", 
       `<li class="prize" data-reaction=${reaction} style="--rotate: ${rotation}deg"> 
@@ -80,7 +81,11 @@ const runTickerAnimation = () => {
  
 const selectPrize = () => { 
   const selected = Math.floor(rotation / prizeSlice); 
+  console.log(selected);
   prizeNodes[selected].classList.add(selectedClass); 
+  const currentPrize = prizes[selected];
+  console.log(currentPrize);
+  createToast('custom', `Выбран вариант ${currentPrize.text}!`)
 }; 
  
 trigger.addEventListener("click", () => { 
@@ -92,7 +97,6 @@ trigger.addEventListener("click", () => {
   ticker.style.animation = "none"; 
   runTickerAnimation(); 
   createToast('info')
-  const value = '111'
 }); 
  
 spinner.addEventListener("transitionend", () => { 
@@ -102,7 +106,8 @@ spinner.addEventListener("transitionend", () => {
   wheel.classList.remove(spinClass); 
   spinner.style.setProperty("--rotate", rotation); 
   trigger.disabled = false; 
-  createToast('warning')
+//  createToast('random');
+ // console.log(selectPrize());
 }); 
  
 const formAddiingCellEl = document.querySelector("#formAddiingCell");  
@@ -117,18 +122,40 @@ function handleformAddiingCellSubmit(event) {
   prizeSlice = 360 / prizes.length;   //делит на сектора  
   prizeOffset = Math.floor(180 / prizes.length); // на какое расстояние смещаем сектора 
   setupWheel();    
-  console.log(prizes); 
-  console.log(prizeNodes);
+//  console.log(prizes); 
+ // console.log(prizeNodes);
   createToast('success') 
 } 
  
 formAddiingCellEl.addEventListener("submit", handleformAddiingCellSubmit);  
+ 
+//setupWheel(); 
+
+//text
+//submit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const notifications = document.querySelector(".notifications"),
   buttons = document.querySelectorAll(".buttons .btn")
 
 const toastDetails = {
-  timer: 5000,
+  timer: 3000,
   success: {
     icon: "fa-circle-check",
     text: "Вариант успешно добавлен!",
@@ -139,7 +166,7 @@ const toastDetails = {
   },
   warning: {
     icon: "fa-triangle-exclamation",
-    text: "Выбран вариант ''",
+    text: "Вариант выбран!",
   },
   info: {
     icon: "fa-circle-info",
@@ -147,8 +174,11 @@ const toastDetails = {
   },
   random: {
     icon: "fa-solid fa-star",
-    text: "Hello World: This is a random toast.",
+    text: "Раскручиваем колесо...",
   },
+  custom:{
+    icon: "fa-solid fa-star"
+  }
 }
 
 const removeToast = (toast) => {
@@ -157,14 +187,14 @@ const removeToast = (toast) => {
   setTimeout(() => toast.remove(), 500)
 }
 
-const createToast = (selectedValue) => {
-  console.log(id)
+const createToast = (id, customText) => {
+//  console.log(id)
   const { icon, text } = toastDetails[id]
   const toast = document.createElement("li")
   toast.className = `toast ${id}`
   toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
-                         <span>${text}</span>
+                         <span>${customText ??text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`
   notifications.appendChild(toast) 

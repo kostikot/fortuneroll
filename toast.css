@@ -57,6 +57,7 @@
   80% {
     transform: translateX(-5%);
   }
+  
   100% {
     transform: translateX(calc(100% + 20px));
   }
